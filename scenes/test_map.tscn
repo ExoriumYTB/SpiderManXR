@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://gq2byjxc0bck"]
 
 [ext_resource type="PackedScene" uid="uid://cjy7arja3d45o" path="res://scenes/vr_player.tscn" id="1_6ulkd"]
+[ext_resource type="PackedScene" uid="uid://b28epq7v56imy" path="res://scenes/props/climbable.tscn" id="2_57l66"]
 [ext_resource type="PackedScene" uid="uid://cl045qfubakxm" path="res://scenes/props/box.tscn" id="2_fn2sa"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6ulkd"]
@@ -38,32 +39,56 @@ mesh = SubResource("PlaneMesh_w3fca")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Meshes/Floor" unique_id=1401171961]
 shape = SubResource("WorldBoundaryShape3D_tv7yv")
 
-[node name="VRPlayer" parent="." unique_id=1768430220 instance=ExtResource("1_6ulkd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="Box" parent="." unique_id=831227604 instance=ExtResource("2_fn2sa")]
+[node name="Box" parent="Meshes" unique_id=831227604 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57934916, 0.5, -3.657108)
 
-[node name="Box2" parent="." unique_id=1264308450 instance=ExtResource("2_fn2sa")]
+[node name="Box2" parent="Meshes" unique_id=1264308450 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5654745, 0.5, -3.657108)
 
-[node name="Box3" parent="." unique_id=1045322416 instance=ExtResource("2_fn2sa")]
+[node name="Box3" parent="Meshes" unique_id=1045322416 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5654745, 1.497148, -3.657108)
 
-[node name="Box4" parent="." unique_id=1355827822 instance=ExtResource("2_fn2sa")]
+[node name="Box4" parent="Meshes" unique_id=1355827822 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.529251, 2.4423378, -3.657108)
 
-[node name="Box5" parent="." unique_id=835181404 instance=ExtResource("2_fn2sa")]
+[node name="Box5" parent="Meshes" unique_id=835181404 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.543093, 2.4423378, -3.657108)
 
-[node name="Box6" parent="." unique_id=217138429 instance=ExtResource("2_fn2sa")]
+[node name="Box6" parent="Meshes" unique_id=217138429 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3987427, 2.4423378, -3.657108)
 
-[node name="Box7" parent="." unique_id=375227504 instance=ExtResource("2_fn2sa")]
+[node name="Box7" parent="Meshes" unique_id=375227504 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3987427, 10.749495, 4.488059)
 
-[node name="Box8" parent="." unique_id=188128309 instance=ExtResource("2_fn2sa")]
+[node name="Box8" parent="Meshes" unique_id=188128309 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5926023, 8.733589, -2.7699318)
 
-[node name="Box9" parent="." unique_id=1204897358 instance=ExtResource("2_fn2sa")]
+[node name="Box9" parent="Meshes" unique_id=1204897358 instance=ExtResource("2_fn2sa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.316524, 13.018733, 5.335808)
+
+[node name="Climbable" parent="Meshes" unique_id=67674833 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 0.5, 0.16729629)
+
+[node name="Climbable2" parent="Meshes" unique_id=1679307762 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 2.475728, 3.0137315)
+
+[node name="Climbable3" parent="Meshes" unique_id=1979542914 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 4.2286005, 0.30032253)
+
+[node name="Climbable4" parent="Meshes" unique_id=1753808495 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 5.8899026, 2.961098)
+
+[node name="Climbable5" parent="Meshes" unique_id=1964907041 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 7.0375423, 0.59062743)
+
+[node name="Climbable6" parent="Meshes" unique_id=1424821731 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 8.275145, 2.9479537)
+
+[node name="Climbable7" parent="Meshes" unique_id=1036269769 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 9.462996, 0.72790694)
+
+[node name="Climbable8" parent="Meshes" unique_id=1036810982 instance=ExtResource("2_57l66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 10.417348, 2.9377706)
+
+[node name="VRPlayer" parent="." unique_id=1768430220 instance=ExtResource("1_6ulkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

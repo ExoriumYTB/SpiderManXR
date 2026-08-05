@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b28epq7v56imy"]
+
+[ext_resource type="PackedScene" uid="uid://cjyilbm4ucc7s" path="res://addons/godot-xr-tools/objects/climbable.tscn" id="1_15eb8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8wpu1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txaec"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w3fca"]
+material = SubResource("StandardMaterial3D_txaec")
+
+[node name="Climbable" unique_id=67674833 instance=ExtResource("1_15eb8")]
+collision_layer = 262161
+
+[node name="CollisionShape3D" parent="." index="0"]
+shape = SubResource("BoxShape3D_8wpu1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1" unique_id=1853811009]
+mesh = SubResource("BoxMesh_w3fca")
