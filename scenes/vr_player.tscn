@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cjy7arja3d45o"]
+
+[ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_7rxgu"]
+[ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="2_ucfvx"]
+[ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="3_tuwl2"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="3_ucfvx"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="3_vr3j4"]
+[ext_resource type="PackedScene" uid="uid://c78tjrtiyqna8" path="res://addons/godot-xr-tools/functions/movement_grapple.tscn" id="4_asymx"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_vr3j4"]
+[ext_resource type="PackedScene" uid="uid://c2q5phg8w08o" path="res://addons/godot-xr-tools/functions/movement_jump.tscn" id="6_0j7xs"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="8_qt5r8"]
+[ext_resource type="Script" uid="uid://cjfu28jmrajlo" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="9_asymx"]
+
+[sub_resource type="Resource" id="Resource_6nqyn"]
+script = ExtResource("9_asymx")
+metadata/_custom_type_script = "uid://cjfu28jmrajlo"
+
+[node name="VRPlayer" type="Node3D" unique_id=1768430220]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1784764475]
+physics_interpolation_mode = 2
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=418079695]
+
+[node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" unique_id=1533717788 instance=ExtResource("1_7rxgu")]
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1897834325]
+tracker = &"left_hand"
+
+[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1712333482 instance=ExtResource("2_ucfvx")]
+
+[node name="MovementDirect" parent="XROrigin3D/LeftController" unique_id=1808147442 instance=ExtResource("3_vr3j4")]
+strafe = true
+
+[node name="MovementGrapple" parent="XROrigin3D/LeftController" unique_id=283277609 instance=ExtResource("4_asymx")]
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=1984931603]
+tracker = &"right_hand"
+
+[node name="RightHand" parent="XROrigin3D/RightController" unique_id=1339547447 instance=ExtResource("3_tuwl2")]
+
+[node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=904560840 instance=ExtResource("5_vr3j4")]
+turn_mode = 2
+
+[node name="MovementJump" parent="XROrigin3D/RightController" unique_id=687008986 instance=ExtResource("6_0j7xs")]
+jump_button_action = "ax_button"
+
+[node name="MovementGrapple" parent="XROrigin3D/RightController" unique_id=1739782991 instance=ExtResource("4_asymx")]
+
+[node name="PlayerBody" parent="XROrigin3D" unique_id=605684105 instance=ExtResource("8_qt5r8")]
+physics = SubResource("Resource_6nqyn")
+ground_control = 1
+
+[node name="StartXR" parent="." unique_id=1430921558 instance=ExtResource("3_ucfvx")]

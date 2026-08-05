@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://gq2byjxc0bck"]
+
+[ext_resource type="PackedScene" uid="uid://cjy7arja3d45o" path="res://scenes/vr_player.tscn" id="1_6ulkd"]
+[ext_resource type="PackedScene" uid="uid://cl045qfubakxm" path="res://scenes/props/box.tscn" id="2_fn2sa"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6ulkd"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_fn2sa"]
+sky_material = SubResource("ProceduralSkyMaterial_6ulkd")
+
+[sub_resource type="Environment" id="Environment_57l66"]
+background_mode = 2
+sky = SubResource("Sky_fn2sa")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_w3fca"]
+size = Vector2(20, 20)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_tv7yv"]
+
+[node name="TestMap" type="Node3D" unique_id=2120983135]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=772175001]
+environment = SubResource("Environment_57l66")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1804152251]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Meshes" type="Node" parent="." unique_id=849780370]
+
+[node name="Floor" type="StaticBody3D" parent="Meshes" unique_id=1676396140]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes/Floor" unique_id=76894715]
+mesh = SubResource("PlaneMesh_w3fca")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Meshes/Floor" unique_id=1401171961]
+shape = SubResource("WorldBoundaryShape3D_tv7yv")
+
+[node name="VRPlayer" parent="." unique_id=1768430220 instance=ExtResource("1_6ulkd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Box" parent="." unique_id=831227604 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57934916, 0.5, -3.657108)
+
+[node name="Box2" parent="." unique_id=1264308450 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5654745, 0.5, -3.657108)
+
+[node name="Box3" parent="." unique_id=1045322416 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5654745, 1.497148, -3.657108)
+
+[node name="Box4" parent="." unique_id=1355827822 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.529251, 2.4423378, -3.657108)
+
+[node name="Box5" parent="." unique_id=835181404 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.543093, 2.4423378, -3.657108)
+
+[node name="Box6" parent="." unique_id=217138429 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3987427, 2.4423378, -3.657108)
+
+[node name="Box7" parent="." unique_id=375227504 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3987427, 10.749495, 4.488059)
+
+[node name="Box8" parent="." unique_id=188128309 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5926023, 8.733589, -2.7699318)
+
+[node name="Box9" parent="." unique_id=1204897358 instance=ExtResource("2_fn2sa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.316524, 13.018733, 5.335808)
