@@ -206,6 +206,7 @@ func physics_movement(
 		player_body: XRToolsPlayerBody,
 		disabled: bool,
 ) -> bool:
+	
 	# Disable if requested
 	if disabled or not enabled or not _controller.get_is_active():
 		_set_grappling(false)
@@ -254,6 +255,9 @@ func physics_movement(
 
 	# Perform exclusive movement as we have dealt with gravity
 	player_body.velocity = player_body.move_player(player_body.velocity)
+	
+	print("This grapple is being used : " + name)
+	
 	return true
 
 

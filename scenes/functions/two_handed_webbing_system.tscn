@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://d4gady834w5e0"]
+
+[ext_resource type="Script" uid="uid://djyy5ntlppb2q" path="res://scenes/two_handed_webbing_system.gd" id="1_8v6ac"]
+[ext_resource type="Material" path="res://addons/godot-xr-tools/materials/pointer.tres" id="2_27pqg"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_42etr"]
+resource_local_to_scene = true
+size = Vector3(0.05, 0.05, 0.05)
+subdivide_depth = 20
+
+[node name="TwoHandedWebbingSystem" type="Node3D" unique_id=704859611 groups=["movement_providers"]]
+script = ExtResource("1_8v6ac")
+
+[node name="Left" type="Node" parent="." unique_id=461543242]
+
+[node name="Left_Web_RayCast" type="RayCast3D" parent="Left" unique_id=768643901]
+collision_mask = 3
+debug_shape_custom_color = Color(0.862745, 0.278431, 0.278431, 1)
+debug_shape_thickness = 1
+
+[node name="Left_Web_Target" type="MeshInstance3D" parent="Left" unique_id=575077601]
+visible = false
+mesh = SubResource("BoxMesh_42etr")
+surface_material_override/0 = ExtResource("2_27pqg")
+
+[node name="LeftLineHelper" type="Node3D" parent="Left" unique_id=1636069155]
+
+[node name="Line" type="CSGCylinder3D" parent="Left/LeftLineHelper" unique_id=1616331103]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+radius = 0.02
+
+[node name="Right" type="Node" parent="." unique_id=881905991]
+
+[node name="Right_Web_RayCast" type="RayCast3D" parent="Right" unique_id=1069393902]
+collision_mask = 3
+debug_shape_custom_color = Color(0.862745, 0.278431, 0.278431, 1)
+debug_shape_thickness = 1
+
+[node name="Right_Web_Target" type="MeshInstance3D" parent="Right" unique_id=2072375725]
+visible = false
+mesh = SubResource("BoxMesh_42etr")
+surface_material_override/0 = ExtResource("2_27pqg")
+
+[node name="RightLineHelper" type="Node3D" parent="Right" unique_id=567226097]
+
+[node name="Line" type="CSGCylinder3D" parent="Right/RightLineHelper" unique_id=1053598567]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+radius = 0.02
