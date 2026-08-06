@@ -29,6 +29,7 @@ physics_interpolation_mode = 2
 
 [node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1897834325]
 tracker = &"left_hand"
+show_when_tracked = true
 
 [node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1712333482 instance=ExtResource("2_ucfvx")]
 
@@ -41,6 +42,7 @@ grab_distance = 0.01
 
 [node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=1984931603]
 tracker = &"right_hand"
+show_when_tracked = true
 
 [node name="RightHand" parent="XROrigin3D/RightController" unique_id=1339547447 instance=ExtResource("3_tuwl2")]
 

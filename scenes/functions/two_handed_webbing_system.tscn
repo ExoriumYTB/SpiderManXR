@@ -11,7 +11,7 @@ subdivide_depth = 20
 [node name="TwoHandedWebbingSystem" type="Node3D" unique_id=704859611 groups=["movement_providers"]]
 script = ExtResource("1_8v6ac")
 
-[node name="Left" type="Node" parent="." unique_id=461543242]
+[node name="Left" type="Node3D" parent="." unique_id=315052337]
 
 [node name="Left_Web_RayCast" type="RayCast3D" parent="Left" unique_id=768643901]
 collision_mask = 3
@@ -29,7 +29,7 @@ surface_material_override/0 = ExtResource("2_27pqg")
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
 radius = 0.02
 
-[node name="Right" type="Node" parent="." unique_id=881905991]
+[node name="Right" type="Node3D" parent="." unique_id=631913798]
 
 [node name="Right_Web_RayCast" type="RayCast3D" parent="Right" unique_id=1069393902]
 collision_mask = 3

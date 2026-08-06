@@ -89,6 +89,7 @@ class WebHand:
 	var controller_tracker_and_pose := ""
 	
 	# Web related ref
+	var root: Node3D
 	var web_raycast: RayCast3D #The web raycast ref
 	var web_target: MeshInstance3D #The web target ref
 	var line_helper: Node3D #The line helper ref
@@ -109,7 +110,7 @@ var right_hand := WebHand.new()
 func _enter_tree() -> void:
 	left_hand.controller = XRHelpers.get_left_controller(self)
 	right_hand.controller = XRHelpers.get_right_controller(self)
-
+	
 	#_update_transform()
 
 
@@ -117,7 +118,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	# In Godot 4 we must now manually call our super class ready function
 	super()
-
+	
 	# Skip if running in the editor
 	if Engine.is_editor_hint():
 		return
@@ -140,6 +141,14 @@ func _ready() -> void:
 	left_hand.web_target = $Left/Left_Web_Target
 	right_hand.web_target = $Right/Right_Web_Target
 	
+	#Define the root
+	left_hand.root = $Left
+	right_hand.root = $Right
+	
+	# Reparent the root so it follow the hands
+	left_hand.root.reparent(left_hand.controller, true)
+	right_hand.root.reparent(right_hand.controller, true)
+	
 	# Ensure web length is valid
 	var min_hook_length := 1.5 * XRServer.world_scale
 	if web_length < min_hook_length:
@@ -157,6 +166,12 @@ func _setup_hand(hand : WebHand):
 	# Deal with line
 	hand.line.radius = rope_width
 	hand.line.hide()
+	
+	match hand.side:
+		0:
+			print("Left Hand")
+		1:
+			print("Right Hand")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(_delta: float) -> void:
@@ -173,15 +188,19 @@ func _physics_process(_delta: float) -> void:
 	# Skip if running in the editor
 	if Engine.is_editor_hint():
 		return
-
+	
 	_calculate_target_visibility(left_hand)
 	_calculate_target_visibility(right_hand)
 
 	_calculate_webbing_line(left_hand)
 	_calculate_webbing_line(right_hand)
+	
 
 ## If pointing web at target then show the target
 func _calculate_target_visibility(hand : WebHand):
+	print(hand.web_raycast.is_colliding())
+	print(hand.web_raycast.get_collider())
+	
 	if enabled and not hand.active and _is_raycast_valid(hand):
 		hand.web_target.global_transform.origin = hand.web_raycast.get_collision_point()
 		hand.web_target.global_transform = hand.web_target.global_transform.orthonormalized()
@@ -275,7 +294,7 @@ func physics_movement(
 
 func _can_use_web(disabled: bool, hand: WebHand) -> bool:
 	# Disable if requested
-	if disabled or not enabled or not hand.controller.get_is_active():
+	if disabled or not enabled:
 		_set_webbing(hand, false)
 		return false
 	
@@ -298,7 +317,11 @@ func _update_hand(hand: WebHand) -> bool:
 		
 		do_impulse = true
 		_set_webbing(hand, true)
-	
+		
+	#print("----------------")
+	#print("Pressed :", hand.web_button)
+	#print("Old :", old_button)
+	#print("Raycast :", _is_raycast_valid(hand))
 	return do_impulse
 
 ## Return a Vector3 that is the force that need to be applied to the player
@@ -322,6 +345,7 @@ func _get_web_force(hand: WebHand, player_velocity: Vector3, do_impulse: bool) -
 	if vdot < speed:
 		return hook_direction * (speed - vdot)
 	
+	print("GET WEB FORCE")
 	return Vector3.ZERO
 
 
@@ -331,7 +355,7 @@ func _is_raycast_valid(hand : WebHand) -> bool:
 	var target := hand.web_raycast.get_collider()
 	if not is_instance_valid(target):
 		return false
-
+	
 	# Check collider layer
 	return true if target.collision_layer & web_enable_mask else false
 
@@ -346,6 +370,8 @@ func _set_web_collision_mask(new_value: int) -> void:
 
 # Sets the webbing state and fire any signals
 func _set_webbing(hand: WebHand, active: bool) -> void:
+	print("SET WEBBING", hand.side, active)
+	
 	# Skip if no change
 	if active == hand.active:
 		return
