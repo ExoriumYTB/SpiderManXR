@@ -92,7 +92,7 @@ class WebHand:
 	#Celocity and position related var,
 	#used to calculate velocity and pulling force
 	var previous_local_hand_position := Vector3.ZERO
-	var hand_velocity := Vector3.ZERO
+	var hand_local_velocity := Vector3.ZERO
 	var local_hand_position := Vector3.ZERO
 
 var left_hand := WebHand.new()
@@ -173,8 +173,8 @@ func _physics_process(_delta: float) -> void:
 	_calculate_webbing_line(left_hand)
 	_calculate_webbing_line(right_hand)
 	
-	_calculate_hand_velocity(left_hand, _delta)
-	_calculate_hand_velocity(right_hand, _delta)
+	_calculate_hand_local_velocity(left_hand, _delta)
+	_calculate_hand_local_velocity(right_hand, _delta)
 
 ## If pointing web at target then show the target
 func _calculate_target_visibility(hand : WebHand):
@@ -197,16 +197,16 @@ func _calculate_webbing_line(hand : WebHand):
 	else:
 		hand.line.visible = false
 
-func _calculate_hand_velocity(hand: WebHand, delta: float) -> void:
+func _calculate_hand_local_velocity(hand: WebHand, delta: float) -> void:
 	var current = hand.local_hand_position
 	hand.local_hand_position = hand.controller.global_position - XRHelpers.get_xr_origin(self).global_position
-	hand.hand_velocity = (hand.local_hand_position - hand.previous_local_hand_position) / delta
+	hand.hand_local_velocity = (hand.local_hand_position - hand.previous_local_hand_position) / delta
 	
-	print("----------------------------------")
-	print("Hand : ", hand.side,)
-	print("Local pos : ", hand.local_hand_position)
-	print("Previous pos : ", hand.previous_local_hand_position)
-	print("Hand Velocity : ", hand.hand_velocity)
+	#print("----------------------------------")
+	#print("Hand : ", hand.side,)
+	#print("Local pos : ", hand.local_hand_position)
+	#print("Previous pos : ", hand.previous_local_hand_position)
+	#print("Hand Velocity : ", hand.hand_local_velocity)
 	
 	hand.previous_local_hand_position = current
 
@@ -326,14 +326,14 @@ func _get_web_force(hand: WebHand, player_velocity: Vector3, do_impulse: bool) -
 	# Ensure velocity is at least winch_speed towards hook
 	var vdot: float = player_velocity.dot(hook_direction)
 	if vdot < speed:
-		print("Pulled Force : " + str(hook_direction * (speed - vdot)))
 		return hook_direction * (speed - vdot)
 	
 	return Vector3.ZERO
 
 func _get_pull_force(hand: WebHand) -> Vector3:
+	
 	var hook_direction := (hand.hook_point - hand.controller.global_position).normalized()
-	var pull_speed = hand.hand_velocity.dot(hook_direction)
+	var pull_speed = -hand.hand_local_velocity.dot(hook_direction)
 	
 	if pull_speed <= 0:
 		return Vector3.ZERO
