@@ -48,7 +48,7 @@ const DEFAULT_ENABLE_MASK := 0b0000_0000_0000_0000_0000_0000_0001_0000
 ## Winch speed applied to the player while the web is held
 @export_custom(PROPERTY_HINT_NONE, "suffix:m/s") var winch_speed := 2.0
 
-@export var pull_strength := 1
+@export var pull_strength := 0.1
 @export var min_pull_distance : float = 0.10
 
 ## Probably need to add export variables for line size, maybe line material at
@@ -88,6 +88,12 @@ class WebHand:
 	var hook_object: Node3D = null
 	var hook_local := Vector3(0,0,0)
 	var hook_point := Vector3(0,0,0)
+	
+	#Celocity and position related var,
+	#used to calculate velocity and pulling force
+	var previous_local_hand_position := Vector3.ZERO
+	var hand_velocity := Vector3.ZERO
+	var local_hand_position := Vector3.ZERO
 
 var left_hand := WebHand.new()
 var right_hand := WebHand.new()
@@ -163,10 +169,12 @@ func _physics_process(_delta: float) -> void:
 	
 	_calculate_target_visibility(left_hand)
 	_calculate_target_visibility(right_hand)
-
+	
 	_calculate_webbing_line(left_hand)
 	_calculate_webbing_line(right_hand)
 	
+	_calculate_hand_velocity(left_hand, _delta)
+	_calculate_hand_velocity(right_hand, _delta)
 
 ## If pointing web at target then show the target
 func _calculate_target_visibility(hand : WebHand):
@@ -188,6 +196,19 @@ func _calculate_webbing_line(hand : WebHand):
 		hand.line.visible = true
 	else:
 		hand.line.visible = false
+
+func _calculate_hand_velocity(hand: WebHand, delta: float) -> void:
+	var current = hand.local_hand_position
+	hand.local_hand_position = hand.controller.global_position - XRHelpers.get_xr_origin(self).global_position
+	hand.hand_velocity = (hand.local_hand_position - hand.previous_local_hand_position) / delta
+	
+	print("----------------------------------")
+	print("Hand : ", hand.side,)
+	print("Local pos : ", hand.local_hand_position)
+	print("Previous pos : ", hand.previous_local_hand_position)
+	print("Hand Velocity : ", hand.hand_velocity)
+	
+	hand.previous_local_hand_position = current
 
 func _exit_tree() -> void:
 	left_hand.controller = null
@@ -235,8 +256,17 @@ func physics_movement(
 	web_force += _get_web_force(left_hand, player_body.velocity, do_left_impulse)
 	web_force += _get_web_force(right_hand, player_body.velocity, do_right_impulse)
 	
+	# Get the pull force and cache it
+	var pull_force := Vector3.ZERO
+	
+	pull_force += _get_pull_force(left_hand)
+	pull_force += _get_pull_force(right_hand)
+	
 	# Apply the web force
 	player_body.velocity += web_force
+	
+	# Apply the pull force
+	player_body.velocity += pull_force
 	
 	# Scale down velocity
 	player_body.velocity *= 1.0 - friction * delta
@@ -301,6 +331,16 @@ func _get_web_force(hand: WebHand, player_velocity: Vector3, do_impulse: bool) -
 	
 	return Vector3.ZERO
 
+func _get_pull_force(hand: WebHand) -> Vector3:
+	var hook_direction := (hand.hook_point - hand.controller.global_position).normalized()
+	var pull_speed = hand.hand_velocity.dot(hook_direction)
+	
+	if pull_speed <= 0:
+		return Vector3.ZERO
+	
+	var impulse = hook_direction * pull_speed * pull_strength
+	
+	return impulse
 
 # Tests if the raycast is striking a valid target
 func _is_raycast_valid(hand : WebHand) -> bool:
