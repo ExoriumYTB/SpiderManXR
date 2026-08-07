@@ -48,7 +48,9 @@ const DEFAULT_ENABLE_MASK := 0b0000_0000_0000_0000_0000_0000_0001_0000
 ## Winch speed applied to the player while the web is held
 @export_custom(PROPERTY_HINT_NONE, "suffix:m/s") var winch_speed := 2.0
 
-@export var pull_strength := 0.1
+## The strength multiplier to the pull
+@export var pull_strength := 0.05
+## The minimum pulling distance to be considered valid (in meters)
 @export var min_pull_distance : float = 0.10
 
 ## Probably need to add export variables for line size, maybe line material at
@@ -63,7 +65,7 @@ const DEFAULT_ENABLE_MASK := 0b0000_0000_0000_0000_0000_0000_0001_0000
 ## Input action that triggers webbing movement. Be sure this button does not
 ## conflict with other functions.
 @export var web_shoot_action := "trigger_click"
-@export var web_pulling_action := "grip_click"
+@export var web_lock_action := "grip_click"
 
 ## Class that handle all variables for hands
 class WebHand:
@@ -82,12 +84,13 @@ class WebHand:
 	# State ref
 	var active := false #Is this hand active
 	var web_shoot_button := false #Is the button pressed on the controller
-	var web_pull_button := false #Is the putton for pulling the player is active
+	var web_lock_button := false #Is the putton for pulling the player is active
 	
 	# Hook related variables
 	var hook_object: Node3D = null
 	var hook_local := Vector3(0,0,0)
 	var hook_point := Vector3(0,0,0)
+	var locked_length := 0.0
 	
 	#Celocity and position related var,
 	#used to calculate velocity and pulling force
@@ -241,8 +244,11 @@ func physics_movement(
 	if not _can_use_web(disabled, left_hand) and not _can_use_web(disabled, right_hand):
 		return false
 	
-	var do_left_impulse = _update_hand(left_hand)
-	var do_right_impulse = _update_hand(right_hand)
+	#var do_left_impulse = _update_hand(left_hand)
+	#var do_right_impulse = _update_hand(right_hand)
+	
+	_update_hand(left_hand)
+	_update_hand(right_hand)
 	
 	if not left_hand.active and not right_hand.active:
 		return false
@@ -250,11 +256,11 @@ func physics_movement(
 	# Apply gravity
 	player_body.velocity += player_body.gravity * delta
 	
-	# Get web force and cache it
-	var web_force := Vector3.ZERO
-	
-	web_force += _get_web_force(left_hand, player_body.velocity, do_left_impulse)
-	web_force += _get_web_force(right_hand, player_body.velocity, do_right_impulse)
+	## Get web force and cache it
+	#var web_force := Vector3.ZERO
+	#
+	#web_force += _get_web_force(left_hand, player_body.velocity, do_left_impulse)
+	#web_force += _get_web_force(right_hand, player_body.velocity, do_right_impulse)
 	
 	# Get the pull force and cache it
 	var pull_force := Vector3.ZERO
@@ -262,11 +268,22 @@ func physics_movement(
 	pull_force += _get_pull_force(left_hand)
 	pull_force += _get_pull_force(right_hand)
 	
+	# Get the lock velocity
+	var lock_force := Vector3.ZERO
+	
+	lock_force += _lock_web_length(left_hand)
+	lock_force += _lock_web_length(right_hand)
+	
+	#print("Lock Force : ", lock_force)
+	
 	# Apply the web force
-	player_body.velocity += web_force
+	#player_body.velocity += web_force
 	
 	# Apply the pull force
 	player_body.velocity += pull_force
+	
+	# Apply the lock force
+	player_body.velocity += lock_force
 	
 	# Scale down velocity
 	player_body.velocity *= 1.0 - friction * delta
@@ -290,9 +307,6 @@ func _update_hand(hand: WebHand) -> bool:
 	var old_web_shoot_button := hand.web_shoot_button
 	hand.web_shoot_button = hand.controller.is_button_pressed(web_shoot_action)
 	
-	var old_web_pull_button = hand.web_pull_button
-	hand.web_pull_button = hand.controller.is_button_pressed(web_pulling_action)
-	
 	# Enable/disable webbing
 	var do_impulse := false
 	if hand.active and not hand.web_shoot_button:
@@ -308,25 +322,56 @@ func _update_hand(hand: WebHand) -> bool:
 	return do_impulse
 
 ## Return a Vector3 that is the force that need to be applied to the player
-func _get_web_force(hand: WebHand, player_velocity: Vector3, do_impulse: bool) -> Vector3:
-	if not hand.active or not hand.web_pull_button:
-		return Vector3.ZERO
+#func _get_web_force(hand: WebHand, player_velocity: Vector3, do_impulse: bool) -> Vector3:
+#	if not hand.active or not hand.web_pull_button:
+#		return Vector3.ZERO
+#	
+#	# Get hook direction
+#	hand.hook_point = hand.hook_object.global_transform * hand.hook_local
+#	var hook_vector := hand.hook_point - hand.controller.global_transform.origin
+#	var hook_length := hook_vector.length()
+#	var hook_direction := hook_vector / hook_length
+#	
+#	# Select the web speed
+#	var speed := impulse_speed if do_impulse else winch_speed
+#	if hook_length < 1.0:
+#		speed = 0.0
+#	
+#	# Ensure velocity is at least winch_speed towards hook
+#	var vdot: float = player_velocity.dot(hook_direction)
+#	if vdot < speed:
+#		return hook_direction * (speed - vdot)
+#	
+#	return Vector3.ZERO
+
+func _lock_web_length(hand: WebHand) -> Vector3:
+	#if not hand.active or not hand.web_lock_button:
+	#	print(" hand not active or web_lock_button not pushed")
+	#	return Vector3.ZERO
 	
-	# Get hook direction
-	hand.hook_point = hand.hook_object.global_transform * hand.hook_local
-	var hook_vector := hand.hook_point - hand.controller.global_transform.origin
-	var hook_length := hook_vector.length()
-	var hook_direction := hook_vector / hook_length
+	var current_length := hand.controller.global_position.distance_to(hand.hook_point)
 	
-	# Select the web speed
-	var speed := impulse_speed if do_impulse else winch_speed
-	if hook_length < 1.0:
-		speed = 0.0
+	var old_web_lock_button := hand.web_lock_button
+	hand.web_lock_button = hand.controller.is_button_pressed(web_lock_action)
 	
-	# Ensure velocity is at least winch_speed towards hook
-	var vdot: float = player_velocity.dot(hook_direction)
-	if vdot < speed:
-		return hook_direction * (speed - vdot)
+	if hand.web_lock_button and not old_web_lock_button:
+		hand.locked_length = current_length
+	else:
+		hand.locked_length = 0.0
+	
+	if hand.locked_length > 0:
+		print("-----------------------------------------------")
+		print("Execute velocity calcul")
+		
+		var hook_direction := (hand.hook_point - hand.controller.global_position).normalized()
+		var overflow := current_length - hand.locked_length
+		var velocity := hook_direction * overflow * winch_speed
+		
+		print("hook direction : ", hook_direction)
+		print("overflow : ", overflow)
+		print("velocity : ", velocity)
+		
+		return velocity
 	
 	return Vector3.ZERO
 
@@ -363,7 +408,7 @@ func _set_web_collision_mask(new_value: int) -> void:
 
 # Sets the webbing state and fire any signals
 func _set_webbing(hand: WebHand, active: bool) -> void:
-	print("SET WEBBING: ", "side: ", hand.side, " active: ", active)
+	#print("SET WEBBING: ", "side: ", hand.side, " active: ", active)
 	
 	# Skip if no change
 	if active == hand.active:

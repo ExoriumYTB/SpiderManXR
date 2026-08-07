@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d4gady834w5e0"]
 
 [ext_resource type="Script" uid="uid://djyy5ntlppb2q" path="res://scenes/two_handed_webbing_system.gd" id="1_8v6ac"]
-[ext_resource type="Material" path="res://addons/godot-xr-tools/materials/pointer.tres" id="2_27pqg"]
+[ext_resource type="Material" uid="uid://cn2lsfvu0pecb" path="res://addons/godot-xr-tools/materials/pointer.tres" id="2_27pqg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_42etr"]
 resource_local_to_scene = true
@@ -10,6 +10,7 @@ subdivide_depth = 20
 
 [node name="TwoHandedWebbingSystem" type="Node3D" unique_id=704859611 groups=["movement_providers"]]
 script = ExtResource("1_8v6ac")
+web_lock_action = null
 
 [node name="Left" type="Node3D" parent="." unique_id=315052337]
 
