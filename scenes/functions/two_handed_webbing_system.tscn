@@ -10,7 +10,6 @@ subdivide_depth = 20
 
 [node name="TwoHandedWebbingSystem" type="Node3D" unique_id=704859611 groups=["movement_providers"]]
 script = ExtResource("1_8v6ac")
-web_lock_action = null
 
 [node name="Left" type="Node3D" parent="." unique_id=315052337]
 

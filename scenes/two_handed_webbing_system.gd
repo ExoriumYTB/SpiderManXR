@@ -91,6 +91,7 @@ class WebHand:
 	var hook_local := Vector3(0,0,0)
 	var hook_point := Vector3(0,0,0)
 	var locked_length := 0.0
+	var can_set_lock_lenght := true #Utile pour savoir quand mettre à jour lock_length
 	
 	#Celocity and position related var,
 	#used to calculate velocity and pulling force
@@ -205,12 +206,6 @@ func _calculate_hand_local_velocity(hand: WebHand, delta: float) -> void:
 	hand.local_hand_position = hand.controller.global_position - XRHelpers.get_xr_origin(self).global_position
 	hand.hand_local_velocity = (hand.local_hand_position - hand.previous_local_hand_position) / delta
 	
-	#print("----------------------------------")
-	#print("Hand : ", hand.side,)
-	#print("Local pos : ", hand.local_hand_position)
-	#print("Previous pos : ", hand.previous_local_hand_position)
-	#print("Hand Velocity : ", hand.hand_local_velocity)
-	
 	hand.previous_local_hand_position = current
 
 func _exit_tree() -> void:
@@ -262,19 +257,19 @@ func physics_movement(
 	#web_force += _get_web_force(left_hand, player_body.velocity, do_left_impulse)
 	#web_force += _get_web_force(right_hand, player_body.velocity, do_right_impulse)
 	
-	# Get the pull force and cache it
+	# Get the pull force then cache it
+	## Contain the force that pull the player
 	var pull_force := Vector3.ZERO
 	
 	pull_force += _get_pull_force(left_hand)
 	pull_force += _get_pull_force(right_hand)
 	
-	# Get the lock velocity
+	# Get the lock velocity then cache it
+	## Contain the velocity needed to lock the length of the web
 	var lock_force := Vector3.ZERO
 	
-	lock_force += _lock_web_length(left_hand)
-	lock_force += _lock_web_length(right_hand)
-	
-	#print("Lock Force : ", lock_force)
+	lock_force += _lock_web_length(left_hand, player_body.velocity)
+	lock_force += _lock_web_length(right_hand, player_body.velocity)
 	
 	# Apply the web force
 	#player_body.velocity += web_force
@@ -344,7 +339,8 @@ func _update_hand(hand: WebHand) -> bool:
 #	
 #	return Vector3.ZERO
 
-func _lock_web_length(hand: WebHand) -> Vector3:
+## Return a Vector3 that is the velocity needed to remove the radial force of the player and lock the lenght of the web
+func _lock_web_length(hand: WebHand, player_velocity: Vector3) -> Vector3:
 	#if not hand.active or not hand.web_lock_button:
 	#	print(" hand not active or web_lock_button not pushed")
 	#	return Vector3.ZERO
@@ -354,22 +350,32 @@ func _lock_web_length(hand: WebHand) -> Vector3:
 	var old_web_lock_button := hand.web_lock_button
 	hand.web_lock_button = hand.controller.is_button_pressed(web_lock_action)
 	
-	if hand.web_lock_button and not old_web_lock_button:
+	if hand.web_lock_button and not old_web_lock_button and hand.can_set_lock_lenght:
 		hand.locked_length = current_length
-	else:
+		hand.can_set_lock_lenght = false
+	elif not hand.web_lock_button and old_web_lock_button and not hand.can_set_lock_lenght:
 		hand.locked_length = 0.0
+		hand.can_set_lock_lenght = true
 	
 	if hand.locked_length > 0:
-		print("-----------------------------------------------")
-		print("Execute velocity calcul")
-		
 		var hook_direction := (hand.hook_point - hand.controller.global_position).normalized()
 		var overflow := current_length - hand.locked_length
-		var velocity := hook_direction * overflow * winch_speed
+		var radial_speed := player_velocity.dot(hook_direction)
 		
-		print("hook direction : ", hook_direction)
-		print("overflow : ", overflow)
-		print("velocity : ", velocity)
+		# Si l'overflow est négatif ne rien faire.
+		# Cela signifie que la corde/web n'est pas tendu et donc
+		# Que l'on peut la détendre
+		if overflow < 0:
+			return Vector3.ZERO
+		
+		# Après avoir calculé radial speed, si c'est plus grand que zéro,
+		# c'est que l'on séloigne
+		if radial_speed > 0:
+			return Vector3.ZERO
+		
+		# On negate radial_speed pour obtenir une vrai velocity 
+		# qui nous tire et non qui nous pousse
+		var velocity := hook_direction * -radial_speed
 		
 		return velocity
 	
