@@ -7,13 +7,13 @@ A vr spiderman game I made to learn godot using Godot 4.7.1-stable Godot XR tool
 - [x] VR movement
 - [ ] Webs :
   - [x] Dual Hands System
-  - [ ] Movement web
+  - [x] Movement web
     - [x] Shoot
     - [x] Pulling with hands
-    - [ ] Blocking in the air
+    - [x] Blocking in the air
     - [x] Let Go
   - [ ] Pickup web
-  - [ ] Blocking web
+  - [ ] Blocking enemy web
 - [ ] Spider sense
 - [ ] Enemy :
   - [ ] Guns
