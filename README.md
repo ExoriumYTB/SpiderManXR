@@ -14,7 +14,9 @@ A vr spiderman game I made to learn godot using Godot 4.7.1-stable Godot XR tool
     - [x] Let Go
   - [ ] Pickup web
   - [ ] Blocking enemy web
-- [ ] Spider sense
+- [ ] Spider sense :
+  - [x] Greyscale shader
+  - [ ] Auto activation
 - [ ] Enemy :
   - [ ] Guns
   - [ ] Cars
