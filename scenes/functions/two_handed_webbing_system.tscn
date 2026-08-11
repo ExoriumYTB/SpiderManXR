@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d4gady834w5e0"]
 
-[ext_resource type="Script" uid="uid://djyy5ntlppb2q" path="res://scenes/two_handed_webbing_system.gd" id="1_8v6ac"]
+[ext_resource type="Script" uid="uid://djyy5ntlppb2q" path="res://scripts/two_handed_webbing_system.gd" id="1_8v6ac"]
 [ext_resource type="Material" uid="uid://cn2lsfvu0pecb" path="res://addons/godot-xr-tools/materials/pointer.tres" id="2_27pqg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_42etr"]

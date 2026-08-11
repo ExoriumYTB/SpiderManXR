@@ -1,6 +1,14 @@
 [gd_scene format=3 uid="uid://cl045qfubakxm"]
 
+[ext_resource type="Shader" uid="uid://x2lr2kudnqqg" path="res://shaders/greyscale.gdshader" id="1_g4j6v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_txaec"]
+render_priority = 0
+shader = ExtResource("1_g4j6v")
+shader_parameter/color = Color(1, 0, 1, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_w3fca"]
+material = SubResource("ShaderMaterial_txaec")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tv7yv"]
 

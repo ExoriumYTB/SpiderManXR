@@ -3,31 +3,42 @@
 [ext_resource type="PackedScene" uid="uid://cjy7arja3d45o" path="res://scenes/vr_player.tscn" id="1_6ulkd"]
 [ext_resource type="PackedScene" uid="uid://b28epq7v56imy" path="res://scenes/props/climbable.tscn" id="2_57l66"]
 [ext_resource type="PackedScene" uid="uid://cl045qfubakxm" path="res://scenes/props/box.tscn" id="2_fn2sa"]
+[ext_resource type="Shader" uid="uid://x2lr2kudnqqg" path="res://shaders/greyscale.gdshader" id="2_p21b5"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6ulkd"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_p21b5"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[sub_resource type="Sky" id="Sky_fn2sa"]
-sky_material = SubResource("ProceduralSkyMaterial_6ulkd")
+[sub_resource type="Sky" id="Sky_bdpbv"]
+sky_material = SubResource("ProceduralSkyMaterial_p21b5")
 
-[sub_resource type="Environment" id="Environment_57l66"]
+[sub_resource type="Environment" id="Environment_ss0f2"]
 background_mode = 2
-sky = SubResource("Sky_fn2sa")
+sky = SubResource("Sky_bdpbv")
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nsoa3"]
+render_priority = 0
+shader = ExtResource("2_p21b5")
+shader_parameter/color = Color(0, 1, 1, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_w3fca"]
+material = SubResource("ShaderMaterial_nsoa3")
 size = Vector2(20, 20)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_tv7yv"]
 
 [node name="TestMap" type="Node3D" unique_id=2120983135]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=772175001]
-environment = SubResource("Environment_57l66")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2047702063]
+environment = SubResource("Environment_ss0f2")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1804152251]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
+
+[node name="VRPlayer" parent="." unique_id=1768430220 instance=ExtResource("1_6ulkd")]
+transform = Transform3D(1, -1.4901161e-08, -1.4901161e-08, -1.4901161e-08, 1, -2.9802322e-08, -1.4901161e-08, 0, 1, -1.4901161e-08, 1, 0)
 
 [node name="Meshes" type="Node" parent="." unique_id=849780370]
 
@@ -89,6 +100,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 9.462996, 0.72790
 
 [node name="Climbable8" parent="Meshes" unique_id=1036810982 instance=ExtResource("2_57l66")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 10.417348, 2.9377706)
-
-[node name="VRPlayer" parent="." unique_id=1768430220 instance=ExtResource("1_6ulkd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -50,10 +50,17 @@ enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg")
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+
+[shader_globals]
+
+global_saturation={
+"type": "float",
+"value": 1.0
+}
 
 [xr]
 
 openxr/enabled=true
+openxr/foveation_level=2
+openxr/foveation_dynamic=true
 shaders/enabled=true
