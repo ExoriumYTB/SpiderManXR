@@ -2,11 +2,25 @@
 
 [ext_resource type="Script" uid="uid://djyy5ntlppb2q" path="res://scripts/two_handed_webbing_system.gd" id="1_8v6ac"]
 [ext_resource type="Material" uid="uid://cn2lsfvu0pecb" path="res://addons/godot-xr-tools/materials/pointer.tres" id="2_27pqg"]
+[ext_resource type="Shader" uid="uid://bbe7fa0n4wfub" path="res://shaders/web_shader.gdshader" id="3_42etr"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_42etr"]
 resource_local_to_scene = true
 size = Vector3(0.05, 0.05, 0.05)
 subdivide_depth = 20
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_novsm"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0hqqt"]
+height = 4096
+noise = SubResource("FastNoiseLite_novsm")
+in_3d_space = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8d6ww"]
+render_priority = 0
+shader = ExtResource("3_42etr")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/perlin_noise = SubResource("NoiseTexture2D_0hqqt")
 
 [node name="TwoHandedWebbingSystem" type="Node3D" unique_id=704859611 groups=["movement_providers"]]
 script = ExtResource("1_8v6ac")
@@ -28,6 +42,7 @@ surface_material_override/0 = ExtResource("2_27pqg")
 [node name="Line" type="CSGCylinder3D" parent="Left/LineHelper" unique_id=1616331103]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
 radius = 0.02
+material = SubResource("ShaderMaterial_8d6ww")
 
 [node name="Right" type="Node3D" parent="." unique_id=631913798]
 
@@ -46,3 +61,4 @@ surface_material_override/0 = ExtResource("2_27pqg")
 [node name="Line" type="CSGCylinder3D" parent="Right/LineHelper" unique_id=1053598567]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
 radius = 0.02
+material = SubResource("ShaderMaterial_8d6ww")
