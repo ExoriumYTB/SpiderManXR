@@ -423,7 +423,7 @@ func _set_webbing(hand: WebHand, active: bool) -> void:
 	# Update the is_active flag
 	hand.active = active
 
-	# Report transition
+	# Report transition&
 	if hand.active:
 		web_started.emit(hand.side)
 	else:

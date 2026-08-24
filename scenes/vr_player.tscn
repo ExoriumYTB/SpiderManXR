@@ -22,46 +22,50 @@ metadata/_custom_type_script = "uid://cjfu28jmrajlo"
 
 [node name="VRPlayer" type="Node3D" unique_id=1768430220]
 
-[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1784764475]
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1784764475 groups=["player"]]
 physics_interpolation_mode = 2
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=418079695]
 
-[node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" unique_id=1533717788 instance=ExtResource("1_7rxgu")]
+[node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" unique_id=1533717788 groups=["player"] instance=ExtResource("1_7rxgu")]
 
 [node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1897834325]
 tracker = &"left_hand"
 show_when_tracked = true
 
-[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1712333482 instance=ExtResource("2_ucfvx")]
+[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1712333482 groups=["player"] instance=ExtResource("2_ucfvx")]
 
-[node name="MovementDirect" parent="XROrigin3D/LeftController" unique_id=1808147442 instance=ExtResource("3_vr3j4")]
+[node name="MovementDirect" parent="XROrigin3D/LeftController" unique_id=1808147442 groups=["player"] instance=ExtResource("3_vr3j4")]
+max_speed = 5.0
 strafe = true
 
-[node name="FunctionPickupLeft" parent="XROrigin3D/LeftController" unique_id=1710056520 instance=ExtResource("5_26qeb")]
+[node name="FunctionPickupLeft" parent="XROrigin3D/LeftController" unique_id=1710056520 groups=["player"] instance=ExtResource("5_26qeb")]
 action_button_action = "grip_click"
 grab_distance = 0.01
+ranged_enable = false
 
-[node name="Node3D" type="Node3D" parent="XROrigin3D/LeftController" unique_id=18296652]
+[node name="DebugSaturation" type="Node3D" parent="XROrigin3D/LeftController" unique_id=18296652 groups=["player"]]
 script = ExtResource("5_hjbd4")
 
 [node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=1984931603]
 tracker = &"right_hand"
 show_when_tracked = true
 
-[node name="RightHand" parent="XROrigin3D/RightController" unique_id=1339547447 instance=ExtResource("3_tuwl2")]
+[node name="RightHand" parent="XROrigin3D/RightController" unique_id=1339547447 groups=["player"] instance=ExtResource("3_tuwl2")]
 
-[node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=904560840 instance=ExtResource("5_vr3j4")]
+[node name="MovementTurn" parent="XROrigin3D/RightController" unique_id=904560840 groups=["player"] instance=ExtResource("5_vr3j4")]
 turn_mode = 2
 
-[node name="MovementJump" parent="XROrigin3D/RightController" unique_id=687008986 instance=ExtResource("6_0j7xs")]
+[node name="MovementJump" parent="XROrigin3D/RightController" unique_id=687008986 groups=["player"] instance=ExtResource("6_0j7xs")]
 jump_button_action = "ax_button"
 
-[node name="FunctionPickupRight" parent="XROrigin3D/RightController" unique_id=1910077410 instance=ExtResource("5_26qeb")]
+[node name="FunctionPickupRight" parent="XROrigin3D/RightController" unique_id=1910077410 groups=["player"] instance=ExtResource("5_26qeb")]
 action_button_action = "grip_click"
 grab_distance = 0.01
+ranged_enable = false
 
-[node name="PlayerBody" parent="XROrigin3D" unique_id=605684105 instance=ExtResource("8_qt5r8")]
+[node name="PlayerBody" parent="XROrigin3D" unique_id=605684105 groups=["player"] instance=ExtResource("8_qt5r8")]
+collision_mask = 525311
 physics = SubResource("Resource_6nqyn")
 ground_control = 2
 

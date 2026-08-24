@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b28epq7v56imy" path="res://scenes/props/climbable.tscn" id="2_57l66"]
 [ext_resource type="PackedScene" uid="uid://cl045qfubakxm" path="res://scenes/props/box.tscn" id="2_fn2sa"]
 [ext_resource type="Shader" uid="uid://x2lr2kudnqqg" path="res://shaders/greyscale.gdshader" id="2_p21b5"]
+[ext_resource type="PackedScene" uid="uid://3mduaqiq57fk" path="res://scenes/Enemies/simple_enemy.tscn" id="5_bdpbv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_p21b5"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -16,6 +17,13 @@ sky_material = SubResource("ProceduralSkyMaterial_p21b5")
 background_mode = 2
 sky = SubResource("Sky_bdpbv")
 glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_w3fca"]
+vertices = PackedVector3Array(-7.75, 0.5, 2.25, -6.5, 0.5, 2, -6.5, 0.5, 1.25, -7.75, 0.5, 1, -7.25, 0.5, -4.75, -1.25, 0.5, -4.75, -1, 0.5, -9.5, -9.5, 0.5, -9.5, -6.5, 0.5, -1, -6.5, 0.5, -2.5, -7.5, 0.5, -2.75, -7.75, 0.5, -0.75, -9.5, 0.5, 4.25, -7.5, 0.5, 4.25, 0.25, 0.5, -4.75, 0.5, 0.5, -3, 9.5, 0.5, -3, 9.5, 0.5, -9.5, -5.5, 0.5, 1, -5.5, 0.5, 2.25, 0.25, 0.5, -2.5, -5.5, 0.5, -0.75, -9.5, 0.5, 9.5, 9.5, 0.5, 9.5, -5.5, 0.5, 4)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(4, 10, 7), PackedInt32Array(0, 13, 12), PackedInt32Array(3, 0, 12), PackedInt32Array(11, 3, 12), PackedInt32Array(11, 12, 10), PackedInt32Array(10, 12, 7), PackedInt32Array(14, 5, 6), PackedInt32Array(16, 15, 14), PackedInt32Array(6, 17, 14), PackedInt32Array(14, 17, 16), PackedInt32Array(2, 18, 1), PackedInt32Array(1, 18, 19), PackedInt32Array(20, 15, 16), PackedInt32Array(8, 9, 21), PackedInt32Array(21, 9, 20), PackedInt32Array(22, 12, 13), PackedInt32Array(24, 20, 22), PackedInt32Array(22, 20, 16), PackedInt32Array(22, 16, 23), PackedInt32Array(18, 21, 20), PackedInt32Array(22, 13, 24), PackedInt32Array(20, 19, 18), PackedInt32Array(24, 19, 20)]
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"geometry"
+agent_height = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nsoa3"]
 render_priority = 0
@@ -40,7 +48,14 @@ shadow_enabled = true
 [node name="VRPlayer" parent="." unique_id=1768430220 instance=ExtResource("1_6ulkd")]
 transform = Transform3D(1, -1.4901161e-08, -1.4901161e-08, -1.4901161e-08, 1, -2.9802322e-08, -1.4901161e-08, 0, 1, -1.4901161e-08, 1, 0)
 
-[node name="Meshes" type="Node" parent="." unique_id=849780370]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=939221137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005003929, -0.0031131506, 0.003754139)
+navigation_mesh = SubResource("NavigationMesh_w3fca")
+
+[node name="SimpleEnemy" parent="." unique_id=1888057324 instance=ExtResource("5_bdpbv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.573638, 2.2056093, -4.065852)
+
+[node name="Meshes" type="Node" parent="." unique_id=849780370 groups=["geometry"]]
 
 [node name="Floor" type="StaticBody3D" parent="Meshes" unique_id=1676396140]
 
@@ -80,7 +95,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.316524, 13.018733, 5.335808
 [node name="Climbable" parent="Meshes" unique_id=67674833 instance=ExtResource("2_57l66")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 0.5, 0.16729629)
 
-[node name="Climbable2" parent="Meshes" unique_id=1679307762 instance=ExtResource("2_57l66")]
+[node name="Climbable2" parent="Meshes" unique_id=1679307762 groups=["player"] instance=ExtResource("2_57l66")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5919533, 2.475728, 3.0137315)
 
 [node name="Climbable3" parent="Meshes" unique_id=1979542914 instance=ExtResource("2_57l66")]
