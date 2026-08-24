@@ -33,7 +33,6 @@ physics_interpolation_mode = 2
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" unique_id=1533717788 groups=["player"] instance=ExtResource("1_7rxgu")]
 
 [node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1897834325]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68617916, 0, 0)
 tracker = &"left_hand"
 show_when_tracked = true
 
