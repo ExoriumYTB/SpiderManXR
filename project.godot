@@ -30,12 +30,13 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/project-time-tracker/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/rider-plugin/plugin.cfg")
 
 [global_group]
 
 player=""
 geometry=""
+health_component=""
 
 [layer_names]
 

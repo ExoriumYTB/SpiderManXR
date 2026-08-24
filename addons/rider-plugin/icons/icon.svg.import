@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0oio532puorb"
-path="res://.godot/imported/icon.svg-a35c2f881bcf1cfb310ad8c3bcb19825.ctex"
+uid="uid://wrdrj6wednn8"
+path="res://.godot/imported/icon.svg-45c914cff7482ba9564963fe65b548e4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/project-time-tracker/icon.svg"
-dest_files=["res://.godot/imported/icon.svg-a35c2f881bcf1cfb310ad8c3bcb19825.ctex"]
+source_file="res://addons/rider-plugin/icons/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-45c914cff7482ba9564963fe65b548e4.ctex"]
 
 [params]
 
