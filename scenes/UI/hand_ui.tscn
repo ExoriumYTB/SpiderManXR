@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://4k3nagg4medt"]
+
+[ext_resource type="Script" uid="uid://d1ljbelert0yk" path="res://scripts/health_bar.gd" id="1_kueum"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kueum"]
+bg_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y65ny"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="HandUI" type="Control" unique_id=658874066]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1715391418]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -59.0
+offset_right = 500.0
+offset_bottom = 1.0
+grow_vertical = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_kueum")
+theme_override_styles/fill = SubResource("StyleBoxFlat_y65ny")
+value = 50.0
+script = ExtResource("1_kueum")

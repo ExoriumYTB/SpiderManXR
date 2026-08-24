@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="1_7rxgu"]
 [ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="2_ucfvx"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="3_ph2b6"]
 [ext_resource type="PackedScene" uid="uid://raeeicvvindd" path="res://addons/godot-xr-tools/hands/scenes/highpoly/right_hand.tscn" id="3_tuwl2"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="3_ucfvx"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="3_vr3j4"]
@@ -10,9 +11,11 @@
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_vr3j4"]
 [ext_resource type="PackedScene" uid="uid://c2q5phg8w08o" path="res://addons/godot-xr-tools/functions/movement_jump.tscn" id="6_0j7xs"]
 [ext_resource type="PackedScene" uid="uid://bxm1ply47vaan" path="res://addons/godot-xr-tools/functions/movement_climb.tscn" id="6_hjbd4"]
+[ext_resource type="PackedScene" uid="uid://4k3nagg4medt" path="res://scenes/UI/hand_ui.tscn" id="7_6iwou"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="8_qt5r8"]
 [ext_resource type="Script" uid="uid://cjfu28jmrajlo" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="9_asymx"]
 [ext_resource type="PackedScene" uid="uid://d4gady834w5e0" path="res://scenes/functions/two_handed_webbing_system.tscn" id="11_26qeb"]
+[ext_resource type="Script" uid="uid://dwnsd84jrxe44" path="res://components/health_component.gd" id="15_ai3f4"]
 
 [sub_resource type="Resource" id="Resource_6nqyn"]
 script = ExtResource("9_asymx")
@@ -30,6 +33,7 @@ physics_interpolation_mode = 2
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" unique_id=1533717788 groups=["player"] instance=ExtResource("1_7rxgu")]
 
 [node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1897834325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68617916, 0, 0)
 tracker = &"left_hand"
 show_when_tracked = true
 
@@ -46,6 +50,11 @@ ranged_enable = false
 
 [node name="DebugSaturation" type="Node3D" parent="XROrigin3D/LeftController" unique_id=18296652 groups=["player"]]
 script = ExtResource("5_hjbd4")
+
+[node name="Viewport2Din3D" parent="XROrigin3D/LeftController" unique_id=838841624 instance=ExtResource("3_ph2b6")]
+transform = Transform3D(2.1855695e-09, 7.642742e-17, -0.1, 4.371139e-09, -0.02, 0, -0.05, -1.7484555e-09, -4.371139e-09, -0.05057758, 0, 0)
+scene = ExtResource("7_6iwou")
+viewport_size = Vector2(500, 50)
 
 [node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=1984931603]
 tracker = &"right_hand"
@@ -74,3 +83,7 @@ ground_control = 2
 [node name="TwoHandedWebbingSystem" parent="XROrigin3D" unique_id=704859611 instance=ExtResource("11_26qeb")]
 
 [node name="StartXR" parent="." unique_id=1430921558 instance=ExtResource("3_ucfvx")]
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1104421349 groups=["health_component"]]
+script = ExtResource("15_ai3f4")
+metadata/_custom_type_script = "uid://dwnsd84jrxe44"
